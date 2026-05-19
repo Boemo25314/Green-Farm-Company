@@ -1,0 +1,612 @@
+
+/* Green Farm Agriculture - Shared External Stylesheet*/
+
+:root {
+  --farm-50: #f0fdf4;
+  --farm-100: #dcfce7;
+  --farm-200: #bbf7d0;
+  --farm-300: #86efac;
+  --farm-400: #4ade80;
+  --farm-500: #22c55e;
+  --farm-600: #16a34a;
+  --farm-700: #15803d;
+  --farm-800: #166534;
+  --farm-900: #14532d;
+  --farm-950: #052e16;
+  --farm-green: #2d6a4f;
+  --farm-light: #52b788;
+  --farm-pale: #d8f3dc;
+  --farm-amber: #f4a261;
+  --farm-cream: #fefae0;
+  --farm-dark: #1b4332;
+}
+
+* { scroll-behavior: smooth; }
+body { font-family: 'Inter', 'Nunito', sans-serif; }
+.font-heading, .font-display { font-family: 'Playfair Display', Georgia, serif; }
+
+.nav-link { position: relative; }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--farm-300);
+  transition: width 0.3s ease, left 0.3s ease;
+}
+.nav-link:hover::after,
+.nav-link.active::after { width: 100%; left: 0; }
+
+.mobile-menu, #mobileMenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
+  opacity: 0;
+}
+.mobile-menu.open, #mobileMenu.open {
+  max-height: 450px;
+  opacity: 1;
+}
+
+.hero-overlay {
+  background: linear-gradient(135deg, rgba(5,46,22,0.9) 0%, rgba(21,128,61,0.78) 55%, rgba(5,46,22,0.92) 100%),
+              url('http://static.photos/agriculture/1200x630/7');
+  background-size: cover;
+  background-position: center;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.9rem;
+  background: #ffffff;
+  font-size: 0.95rem;
+  color: #1f2937;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--farm-500);
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.18);
+}
+.form-input.error { border-color: #ef4444; }
+.form-input.valid { border-color: var(--farm-500); }
+.error-msg {
+  color: #ef4444;
+  font-size: 0.78rem;
+  margin-top: 5px;
+  display: none;
+}
+.error-msg.visible { display: block; }
+
+.info-card, .team-card, .value-card, .testimonial-card, .product-card, .cart-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.info-card:hover, .team-card:hover, .value-card:hover, .testimonial-card:hover, .product-card:hover, .cart-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
+.fade-in, .reveal, .reveal-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in.visible, .reveal.visible, .reveal-section.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast { transform: translateY(100px); opacity: 0; transition: all 0.4s ease; }
+.toast.show { transform: translateY(0); opacity: 1; }
+.qty-btn { transition: all 0.2s ease; }
+.qty-btn:active { transform: scale(0.9); }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--farm-50); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, var(--farm-500), var(--farm-700));
+  border-radius: 10px;
+}
+
+
+/* ===== Styles moved from index.html ===== */
+
+    * { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .font-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+
+    .hero-bg {
+      background: linear-gradient(135deg, rgba(5,46,22,0.82) 0%, rgba(21,128,61,0.7) 50%, rgba(5,46,22,0.85) 100%),
+                  url('http://static.photos/agriculture/1200x630/7');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .about-bg {
+      background: linear-gradient(to right, rgba(5,46,22,0.9) 0%, rgba(21,128,61,0.75) 100%),
+                  url('http://static.photos/nature/1200x630/22');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .product-card:hover .product-img {
+      transform: scale(1.1);
+    }
+
+    .product-card:hover .product-overlay {
+      opacity: 1;
+    }
+
+    .gallery-item:hover .gallery-img {
+      transform: scale(1.08);
+    }
+
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    .stat-number {
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .nav-link {
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #86efac;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .mobile-menu.open {
+      max-height: 400px;
+    }
+
+    .testimonial-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f0fdf4;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #22c55e, #15803d);
+      border-radius: 10px;
+    }
+
+
+/* ===== Styles moved from about.html ===== */
+body { font-family: 'Nunito', sans-serif; }
+
+    /* Nav link underline effect */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #f4a261;
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+      left: 0;
+    }
+
+    /* Timeline dot */
+    .timeline-dot {
+      position: absolute;
+      left: -9px;
+      top: 6px;
+      width: 18px;
+      height: 18px;
+      background: #2d6a4f;
+      border-radius: 50%;
+      border: 3px solid #fefae0;
+      z-index: 2;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .timeline-item:hover .timeline-dot {
+      transform: scale(1.3);
+      box-shadow: 0 0 0 6px rgba(82, 183, 136, 0.3);
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* Mobile menu animation */
+    #mobileMenu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
+      opacity: 0;
+    }
+    #mobileMenu.open {
+      max-height: 400px;
+      opacity: 1;
+    }
+
+    /* Hero parallax */
+    .hero-bg {
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Team card hover */
+    .team-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .team-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(27, 67, 50, 0.12);
+    }
+
+    /* Value card hover */
+    .value-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .value-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(27, 67, 50, 0.1);
+    }
+
+    /* Counter animation */
+    .counter-num {
+      display: inline-block;
+      transition: color 0.3s;
+    }
+
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+
+    /* Decorative floating shapes */
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+    @keyframes float-slow {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(-3deg); }
+    }
+    .float-anim { animation: float 6s ease-in-out infinite; }
+    .float-anim-slow { animation: float-slow 8s ease-in-out infinite; }
+
+    /* Image overlay */
+    .img-overlay {
+      position: relative;
+      overflow: hidden;
+    }
+    .img-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(45,106,79,0.1), rgba(244,162,97,0.1));
+      border-radius: inherit;
+      pointer-events: none;
+    }
+    .img-overlay img {
+      transition: transform 0.5s ease;
+    }
+    .img-overlay:hover img {
+      transform: scale(1.05);
+    }
+
+
+/* ===== Styles moved from products.html ===== */
+body { font-family:'Nunito',sans-serif; }
+    .nav-link { position:relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:50%; width:0; height:2px; background:#f4a261; transition:width .3s, left .3s; }
+    .nav-link:hover::after, .nav-link.active::after { width:100%; left:0; }
+
+    /* Product card animations */
+    .product-card { transition: transform .3s ease, box-shadow .3s ease, opacity .4s ease; }
+    .product-card:hover { transform:translateY(-6px); box-shadow:0 20px 40px rgba(0,0,0,.1); }
+    .product-card .card-img { transition: transform .5s ease; }
+    .product-card:hover .card-img { transform: scale(1.08); }
+    .product-card .order-btn { transition: all .3s ease; }
+    .product-card:hover .order-btn { transform: scale(1.05); }
+
+    /* Filter buttons */
+    .filter-btn { transition: all .3s ease; }
+    .filter-btn.active { background:#2d6a4f; color:#fff; border-color:#2d6a4f; }
+    .filter-btn:not(.active):hover { background:#2d6a4f; color:#fff; border-color:#2d6a4f; }
+
+    /* Card show/hide animation */
+    .product-card.card-hidden { opacity:0; transform:scale(.92); pointer-events:none; position:absolute; visibility:hidden; }
+    .product-card.card-visible { opacity:1; transform:scale(1); position:relative; visibility:visible; }
+
+    /* Section reveal */
+    .reveal-section { opacity:0; transform:translateY(30px); transition:opacity .7s ease, transform .7s ease; }
+    .reveal-section.revealed { opacity:1; transform:translateY(0); }
+
+    /* Staggered children */
+    .stagger-child { opacity:0; transform:translateY(20px); transition:opacity .5s ease, transform .5s ease; }
+    .stagger-child.revealed { opacity:1; transform:translateY(0); }
+
+    /* Floating hero decorations */
+    @keyframes floatSlow { 0%,100%{ transform:translateY(0) rotate(0deg); } 50%{ transform:translateY(-15px) rotate(5deg); } }
+    @keyframes floatMed { 0%,100%{ transform:translateY(0) rotate(0deg); } 50%{ transform:translateY(-10px) rotate(-5deg); } }
+    .float-slow { animation: floatSlow 6s ease-in-out infinite; }
+    .float-med { animation: floatMed 4s ease-in-out infinite; }
+
+    /* Mobile menu */
+    #mobileMenu { max-height:0; overflow:hidden; transition:max-height .4s ease, padding .3s ease; padding-top:0; padding-bottom:0; }
+    #mobileMenu.open { max-height:400px; padding-top:0.75rem; padding-bottom:1rem; }
+
+    /* Badge pulse */
+    @keyframes badgePulse { 0%,100%{ box-shadow:0 0 0 0 rgba(82,183,136,.4); } 70%{ box-shadow:0 0 0 8px rgba(82,183,136,0); } }
+    .badge-pulse { animation: badgePulse 2s infinite; }
+
+    /* CTA shimmer */
+    @keyframes shimmer { 0%{ background-position:-200% center; } 100%{ background-position:200% center; } }
+    .shimmer-btn { background-size:200% auto; animation: shimmer 3s linear infinite; }
+
+    /* Toast */
+    .toast { transform:translateY(100px); opacity:0; transition:all .4s ease; }
+    .toast.show { transform:translateY(0); opacity:1; }
+
+    /* Category section transition */
+    .category-section { transition: opacity .4s ease, max-height .5s ease; overflow:hidden; }
+    .category-section.section-hidden { opacity:0; max-height:0 !important; margin:0 !important; padding:0 !important; }
+    .category-section.section-visible { opacity:1; max-height:3000px; }
+
+    /* Quantity controls */
+    .qty-btn { transition: all .2s ease; }
+    .qty-btn:active { transform:scale(.9); }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#fefae0; }
+    ::-webkit-scrollbar-thumb { background:#52b788; border-radius:4px; }
+    ::-webkit-scrollbar-thumb:hover { background:#2d6a4f; }
+
+
+/* ===== Styles moved from gallery.html ===== */
+
+    * { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .font-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+
+    .nav-link {
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #86efac;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .mobile-menu.open {
+      max-height: 400px;
+    }
+
+    .gallery-item:hover .gallery-img {
+      transform: scale(1.08);
+    }
+
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f0fdf4;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #22c55e, #15803d);
+      border-radius: 10px;
+    }
+
+
+/* ===== Styles moved from contact.html ===== */
+* { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .font-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+
+    .nav-link {
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #86efac;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .mobile-menu.open {
+      max-height: 400px;
+    }
+
+    .contact-hero {
+      background: linear-gradient(135deg, rgba(5,46,22,0.9) 0%, rgba(21,128,61,0.78) 55%, rgba(5,46,22,0.92) 100%),
+                  url('http://static.photos/agriculture/1200x630/7');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.9rem;
+      background: #ffffff;
+      font-size: 0.95rem;
+      color: #1f2937;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #22c55e;
+      box-shadow: 0 0 0 3px rgba(34,197,94,0.18);
+    }
+
+    .form-input.error {
+      border-color: #ef4444;
+    }
+
+    .form-input.valid {
+      border-color: #22c55e;
+    }
+
+    .error-msg {
+      color: #ef4444;
+      font-size: 0.78rem;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .error-msg.visible {
+      display: block;
+    }
+
+    .info-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 35px rgba(0,0,0,0.10);
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f0fdf4;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #22c55e, #15803d);
+      border-radius: 10px;
+    }
