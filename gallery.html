@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explore Green Farm Agriculture photo gallery and documentary farm video." />
+  <title>Gallery | Green Farm Agriculture</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ['Georgia', 'serif'],
+          },
+          colors: {
+            farm: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+              950: '#052e16',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+    * { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .font-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+
+    .nav-link {
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #86efac;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .mobile-menu.open {
+      max-height: 400px;
+    }
+
+    .gallery-item:hover .gallery-img {
+      transform: scale(1.08);
+    }
+
+    .gallery-item:hover .gallery-overlay {
+      opacity: 1;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f0fdf4;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #22c55e, #15803d);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="bg-farm-50 text-gray-800 overflow-x-hidden">
+
+  <!-- Header and main navigation -->
+  <header class="fixed top-0 left-0 w-full z-50 bg-farm-950/95 backdrop-blur-md shadow-lg transition-all duration-300" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 md:h-20">
+        <!-- Site logo -->
+        <a href="index.html" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 md:w-12 md:h-12 bg-farm-500 rounded-full flex items-center justify-center group-hover:bg-farm-400 transition-colors shadow-md">
+            <i data-lucide="leaf" class="w-5 h-5 md:w-6 md:h-6 text-white"></i>
+          </div>
+          <div>
+            <h1 class="text-lg md:text-xl font-bold text-white font-heading leading-tight">Green Farm</h1>
+            <p class="text-[10px] md:text-xs text-farm-300 tracking-wider uppercase">Agriculture</p>
+          </div>
+        </a>
+
+        <!-- Menu shown on large screens -->
+        <nav class="hidden md:flex items-center gap-1" aria-label="Main navigation">
+          <a href="index.html" class="nav-link text-gray-300 font-medium px-4 py-2 rounded-lg hover:bg-white/10 hover:text-farm-300 transition-all text-sm">Home</a>
+          <a href="about.html" class="nav-link text-gray-300 font-medium px-4 py-2 rounded-lg hover:bg-white/10 hover:text-farm-300 transition-all text-sm">About</a>
+          <a href="products.html" class="nav-link text-gray-300 font-medium px-4 py-2 rounded-lg hover:bg-white/10 hover:text-farm-300 transition-all text-sm">Products</a>
+          <a href="gallery.html" class="nav-link active text-farm-300 font-semibold px-4 py-2 rounded-lg hover:bg-white/10 transition-all text-sm">Gallery</a>
+          <a href="contact.html" class="nav-link text-gray-300 font-medium px-4 py-2 rounded-lg hover:bg-white/10 hover:text-farm-300 transition-all text-sm">Contact</a>
+          <a href="contact.html" class="ml-3 bg-farm-500 hover:bg-farm-600 text-white font-semibold px-5 py-2.5 rounded-lg transition-all text-sm shadow-md hover:shadow-lg">
+            Order Now
+          </a>
+        </nav>
+
+        <!-- Menu button for phones and tablets -->
+        <button id="menuBtn" class="md:hidden text-white p-2 rounded-lg hover:bg-white/10 transition-colors" aria-label="Toggle menu" aria-expanded="false">
+          <i data-lucide="menu" class="w-6 h-6" id="menuIcon"></i>
+        </button>
+      </div>
+
+      <!-- Mobile menu links -->
+      <div class="mobile-menu md:hidden" id="mobileMenu">
+        <div class="pb-4 pt-2 space-y-1">
+          <a href="index.html" class="block text-gray-300 font-medium px-4 py-3 rounded-lg hover:bg-white/10 hover:text-farm-300 transition-all" onclick="closeMobile()">Home</a>
+          <a href="about.html" class="block text-gray-300 font-medium px-4 py-3 rounded-lg hover:bg-white/10 hover:text-farm-300 transition-all" onclick="closeMobile()">About</a>
+          <a href="products.html" class="block text-gray-300 font-medium px-4 py-3 rounded-lg hover:bg-white/10 hover:text-farm-300 transition-all" onclick="closeMobile()">Products</a>
+          <a href="gallery.html" class="block text-farm-300 font-semibold px-4 py-3 rounded-lg hover:bg-white/10 transition-all" onclick="closeMobile()">Gallery</a>
+          <a href="contact.html" class="block text-gray-300 font-medium px-4 py-3 rounded-lg hover:bg-white/10 hover:text-farm-300 transition-all" onclick="closeMobile()">Contact</a>
+          <a href="contact.html" class="block bg-farm-500 text-white font-semibold px-4 py-3 rounded-lg hover:bg-farm-600 transition-all text-center mt-2" onclick="closeMobile()">Order Now</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-16 md:pt-20">
+    <!-- Page intro for the gallery -->
+    <section class="relative bg-farm-950 text-white py-20 md:py-28 px-4 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-farm-950 via-farm-800 to-farm-950"></div>
+      <div class="absolute -top-24 -right-24 w-72 h-72 bg-farm-500/20 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-farm-300/10 rounded-full blur-3xl"></div>
+
+      <div class="relative max-w-7xl mx-auto text-center">
+        <span class="text-farm-300 font-semibold uppercase tracking-wider text-sm">Visual Tour</span>
+        <h2 class="text-4xl md:text-6xl font-bold mt-3 mb-5 font-heading">Farm Gallery</h2>
+        <p class="text-gray-200 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+          Take a closer look at our fields, harvest process, farm animals, and delivery work around Botswana.
+        </p>
+      </div>
+    </section>
+
+
+    <!-- Farm documentary video -->
+    <section class="py-16 px-4 bg-farm-50" aria-label="Farm documentary video">
+      <div class="max-w-5xl mx-auto">
+        <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-farm-950 fade-in">
+          <!-- Replace documetary.mp4 with your real farm documentary video file -->
+          <video controls poster="images/farm-video-poster.jpg" class="w-full aspect-video object-cover bg-farm-950">
+            <source src="documetary.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <!-- Farm photo gallery -->
+    <section class="py-20 md:py-24 px-4 bg-white" aria-labelledby="photos-heading">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-14 fade-in">
+          <span class="text-farm-600 font-semibold uppercase tracking-wider text-sm">Photo Gallery</span>
+          <h2 id="photos-heading" class="text-3xl md:text-4xl font-bold text-farm-900 mt-2 font-heading">Life on the Farm</h2>
+          <p class="text-gray-500 mt-4 max-w-2xl mx-auto text-lg">Click any image to view it properly.</p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4" role="list" aria-label="Farm photo gallery">
+          <div class="gallery-item relative overflow-hidden rounded-xl cursor-pointer group fade-in col-span-2 row-span-2 min-h-[240px] md:min-h-[420px]" role="listitem" tabindex="0" data-label="Vegetable fields at sunrise">
+            <img src="veges.png" alt="Vegetable fields at sunrise" class="gallery-img w-full h-full object-cover transition-transform duration-500">
+            <div class="gallery-overlay absolute inset-0 bg-farm-900/60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+              <span class="bg-white text-farm-700 px-5 py-2 rounded-lg font-semibold text-sm">Vegetable fields at sunrise</span>
+            </div>
+          </div>
+
+          <div class="gallery-item relative overflow-hidden rounded-xl cursor-pointer group fade-in h-40 md:h-48" role="listitem" tabindex="0" data-label="Freshly harvested tomatoes">
+            <img src="Sunset on farm.png" alt="Freshly harvested tomatoes" class="gallery-img w-full h-full object-cover transition-transform duration-500" onerror="this.src='http://static.photos/food/640x360/12'">
+            <div class="gallery-overlay absolute inset-0 bg-farm-900/60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+              <span class="bg-white text-farm-700 px-5 py-2 rounded-lg font-semibold text-sm">Fresh harvest</span>
+            </div>
+          </div>
+
+          <div class="gallery-item relative overflow-hidden rounded-xl cursor-pointer group fade-in h-40 md:h-48" role="listitem" tabindex="0" data-label="Free range chickens in the yard">
+            <img src="chicken.png" alt="Free range chickens in the yard" class="gallery-img w-full h-full object-cover transition-transform duration-500">
+            <div class="gallery-overlay absolute inset-0 bg-farm-900/60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+              <span class="bg-white text-farm-700 px-5 py-2 rounded-lg font-semibold text-sm">Free range hens</span>
+            </div>
+          </div>
+
+          <div class="gallery-item relative overflow-hidden rounded-xl cursor-pointer group fade-in h-40 md:h-48" role="listitem" tabindex="0" data-label="Dairy cows in the field">
+            <img src="dairy.png" alt="Dairy cows in the field" class="gallery-img w-full h-full object-cover transition-transform duration-500" onerror="this.src='http://static.photos/agriculture/640x360/33'">
+            <div class="gallery-overlay absolute inset-0 bg-farm-900/60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+              <span class="bg-white text-farm-700 px-5 py-2 rounded-lg font-semibold text-sm">Our dairy cows</span>
+            </div>
+          </div>
+
+          <div class="gallery-item relative overflow-hidden rounded-xl cursor-pointer group fade-in h-40 md:h-48" role="listitem" tabindex="0" data-label="Spinach crop close up">
+            <img src="spinach.png" alt="Spinach crop close up" class="gallery-img w-full h-full object-cover transition-transform duration-500">
+            <div class="gallery-overlay absolute inset-0 bg-farm-900/60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+              <span class="bg-white text-farm-700 px-5 py-2 rounded-lg font-semibold text-sm">Spinach crop</span>
+            </div>
+          </div>
+
+          <div class="gallery-item relative overflow-hidden rounded-xl cursor-pointer group fade-in h-40" role="listitem" tabindex="0" data-label="Fresh eggs collected in the morning">
+            <img src="Fresh eggs.png" alt="Fresh eggs collected in the morning" class="gallery-img w-full h-full object-cover transition-transform duration-500">
+            <div class="gallery-overlay absolute inset-0 bg-farm-900/60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+              <span class="bg-white text-farm-700 px-5 py-2 rounded-lg font-semibold text-sm">Morning eggs</span>
+            </div>
+          </div>
+
+          <div class="gallery-item relative overflow-hidden rounded-xl cursor-pointer group fade-in h-40" role="listitem" tabindex="0" data-label="Watermelon harvest">
+            <img src="Watermelon harvest.png" alt="Watermelon harvest" class="gallery-img w-full h-full object-cover transition-transform duration-500">
+            <div class="gallery-overlay absolute inset-0 bg-farm-900/60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+              <span class="bg-white text-farm-700 px-5 py-2 rounded-lg font-semibold text-sm">Watermelon harvest</span>
+            </div>
+          </div>
+
+          <div class="gallery-item relative overflow-hidden rounded-xl cursor-pointer group fade-in col-span-2 h-40" role="listitem" tabindex="0" data-label="Morning delivery preparation">
+            <img src="Morning delivery preparation.png" alt="Morning delivery preparation" class="gallery-img w-full h-full object-cover transition-transform duration-500">
+            <div class="gallery-overlay absolute inset-0 bg-farm-900/60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+              <span class="bg-white text-farm-700 px-5 py-2 rounded-lg font-semibold text-sm">Preparing deliveries</span>
+            </div>
+          </div>
+
+          <div class="gallery-item relative overflow-hidden rounded-xl cursor-pointer group fade-in h-40" role="listitem" tabindex="0" data-label="Fresh dairy products">
+            <img src="Fresh dairy.png" alt="Fresh dairy products" class="gallery-img w-full h-full object-cover transition-transform duration-500">
+            <div class="gallery-overlay absolute inset-0 bg-farm-900/60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+              <span class="bg-white text-farm-700 px-5 py-2 rounded-lg font-semibold text-sm">Fresh dairy</span>
+            </div>
+          </div>
+
+          <div class="gallery-item relative overflow-hidden rounded-xl cursor-pointer group fade-in h-40" role="listitem" tabindex="0" data-label="Drip irrigation system in action">
+            <img src="Drip irrigation.png" alt="Drip irrigation system in action" class="gallery-img w-full h-full object-cover transition-transform duration-500">
+            <div class="gallery-overlay absolute inset-0 bg-farm-900/60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+              <span class="bg-white text-farm-700 px-5 py-2 rounded-lg font-semibold text-sm">Drip irrigation</span>
+            </div>
+          </div>
+
+          <div class="gallery-item relative overflow-hidden rounded-xl cursor-pointer group fade-in h-40" role="listitem" tabindex="0" data-label="Harvest team at work">
+            <img src="Harvest team at work.png" alt="Harvest team at work" class="gallery-img w-full h-full object-cover transition-transform duration-500">
+            <div class="gallery-overlay absolute inset-0 bg-farm-900/60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+              <span class="bg-white text-farm-700 px-5 py-2 rounded-lg font-semibold text-sm">Harvest team</span>
+            </div>
+          </div>
+
+          <div class="gallery-item relative overflow-hidden rounded-xl cursor-pointer group fade-in h-40" role="listitem" tabindex="0" data-label="Packaged produce ready for delivery">
+            <img src="package.png" alt="Packaged produce ready for delivery" class="gallery-img w-full h-full object-cover transition-transform duration-500">
+            <div class="gallery-overlay absolute inset-0 bg-farm-900/60 flex items-center justify-center opacity-0 transition-opacity duration-300">
+              <span class="bg-white text-farm-700 px-5 py-2 rounded-lg font-semibold text-sm">Ready to deliver</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Popup image viewer for gallery pictures -->
+  <div id="lightbox" class="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center hidden cursor-pointer p-4" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button id="lightboxClose" class="absolute top-4 right-4 text-white/70 hover:text-white transition-colors" aria-label="Close image viewer">
+      <i data-lucide="x" class="w-8 h-8"></i>
+    </button>
+    <div class="max-w-5xl w-full">
+      <img id="lightboxImg" src="" alt="Gallery image" class="max-w-full max-h-[80vh] mx-auto object-contain rounded-lg shadow-2xl">
+      <p id="lightboxCaption" class="text-white text-center mt-4 font-semibold"></p>
+    </div>
+  </div>
+
+  <!-- Footer with links and contact details -->
+  <footer class="bg-farm-950 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 py-12 md:py-16">
+        <div class="sm:col-span-2 lg:col-span-1">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 bg-farm-500 rounded-full flex items-center justify-center">
+              <i data-lucide="leaf" class="w-5 h-5 text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold font-heading">Green Farm</h3>
+              <p class="text-xs text-farm-400 tracking-wider uppercase">Agriculture</p>
+            </div>
+          </div>
+          <p class="text-gray-400 text-sm leading-relaxed mb-5">Freshness, Quality and Sustainability — growing wholesome food for Botswana families since 2005.</p>
+        </div>
+
+        <div>
+          <h4 class="font-semibold text-white mb-4 text-sm uppercase tracking-wider">Quick Links</h4>
+          <ul class="space-y-2.5">
+            <li><a href="index.html" class="text-gray-400 hover:text-farm-300 transition-colors text-sm">Home</a></li>
+            <li><a href="about.html" class="text-gray-400 hover:text-farm-300 transition-colors text-sm">About Us</a></li>
+            <li><a href="products.html" class="text-gray-400 hover:text-farm-300 transition-colors text-sm">Products</a></li>
+            <li><a href="gallery.html" class="text-gray-400 hover:text-farm-300 transition-colors text-sm">Gallery</a></li>
+            <li><a href="contact.html" class="text-gray-400 hover:text-farm-300 transition-colors text-sm">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-semibold text-white mb-4 text-sm uppercase tracking-wider">Gallery Focus</h4>
+          <ul class="space-y-2.5 text-sm text-gray-400">
+            <li>Farm documentary video</li>
+            <li>Harvest photos</li>
+            <li>Delivery preparation</li>
+            <li>Farm animals</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-semibold text-white mb-4 text-sm uppercase tracking-wider">Get In Touch</h4>
+          <ul class="space-y-2.5 text-sm text-gray-400">
+            <li>Plot 2458, Tlokweng Road</li>
+            <li>Gaborone, Botswana</li>
+            <li>+267 7123 4567</li>
+            <li>info@greenfarm.co.bw</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 py-6 flex flex-col md:flex-row items-center justify-between gap-3">
+        <p class="text-gray-500 text-sm">&copy; 2025 Green Farm Agriculture. All rights reserved.</p>
+        <div class="flex gap-6 text-sm">
+          <a href="#" class="text-gray-500 hover:text-farm-300 transition-colors">Privacy Policy</a>
+          <a href="#" class="text-gray-500 hover:text-farm-300 transition-colors">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    // Load the icons used across the page
+    lucide.createIcons();
+
+    // This handles opening and closing the mobile menu
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    let menuOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('open', menuOpen);
+      menuBtn.setAttribute('aria-expanded', String(menuOpen));
+      const icon = menuBtn.querySelector('i');
+      icon.setAttribute('data-lucide', menuOpen ? 'x' : 'menu');
+      lucide.createIcons();
+    });
+
+    // Close the phone menu after someone clicks a link
+    function closeMobile() {
+      menuOpen = false;
+      mobileMenu.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      const icon = menuBtn.querySelector('i');
+      icon.setAttribute('data-lucide', 'menu');
+      lucide.createIcons();
+    }
+
+    // Add a stronger shadow when the user scrolls, so the navbar stands out
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('shadow-xl');
+        navbar.style.backdropFilter = 'blur(12px)';
+      } else {
+        navbar.classList.remove('shadow-xl');
+      }
+    });
+
+    // Fade sections in as they appear on the screen
+    const fadeElements = document.querySelectorAll('.fade-in');
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, i * 100);
+          fadeObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    fadeElements.forEach(el => fadeObserver.observe(el));
+
+    // Open the clicked gallery image in a larger view
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const img = item.querySelector('img');
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightboxCaption.textContent = item.getAttribute('data-label') || img.alt;
+        lightbox.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      });
+
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          item.click();
+        }
+      });
+    });
+
+    // Close the image popup when the user clicks outside it or clicks the close button
+    function closeLightbox() {
+      lightbox.classList.add('hidden');
+      document.body.style.overflow = '';
+      lightboxImg.src = '';
+    }
+
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    // Also let the user close the popup using the Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+</body>
+</html>
