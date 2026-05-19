@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Learn about Green Farm Agriculture – our history, mission, values, and the people who make it happen." />
+  <title>About Us | Green Farm Agriculture</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            farm: {
+              green: '#2d6a4f',
+              light: '#52b788',
+              pale: '#d8f3dc',
+              amber: '#f4a261',
+              cream: '#fefae0',
+              dark: '#1b4332'
+            }
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body: ['"Nunito"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Nunito', sans-serif; }
+
+    /* Nav link underline effect */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #f4a261;
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+      left: 0;
+    }
+
+    /* Timeline dot */
+    .timeline-dot {
+      position: absolute;
+      left: -9px;
+      top: 6px;
+      width: 18px;
+      height: 18px;
+      background: #2d6a4f;
+      border-radius: 50%;
+      border: 3px solid #fefae0;
+      z-index: 2;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .timeline-item:hover .timeline-dot {
+      transform: scale(1.3);
+      box-shadow: 0 0 0 6px rgba(82, 183, 136, 0.3);
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* Mobile menu animation */
+    #mobileMenu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
+      opacity: 0;
+    }
+    #mobileMenu.open {
+      max-height: 400px;
+      opacity: 1;
+    }
+
+    /* Hero parallax */
+    .hero-bg {
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Team card hover */
+    .team-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .team-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(27, 67, 50, 0.12);
+    }
+
+    /* Value card hover */
+    .value-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .value-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(27, 67, 50, 0.1);
+    }
+
+    /* Counter animation */
+    .counter-num {
+      display: inline-block;
+      transition: color 0.3s;
+    }
+
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+
+    /* Decorative floating shapes */
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+    @keyframes float-slow {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(-3deg); }
+    }
+    .float-anim { animation: float 6s ease-in-out infinite; }
+    .float-anim-slow { animation: float-slow 8s ease-in-out infinite; }
+
+    /* Image overlay */
+    .img-overlay {
+      position: relative;
+      overflow: hidden;
+    }
+    .img-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(45,106,79,0.1), rgba(244,162,97,0.1));
+      border-radius: inherit;
+      pointer-events: none;
+    }
+    .img-overlay img {
+      transition: transform 0.5s ease;
+    }
+    .img-overlay:hover img {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body class="bg-farm-cream text-gray-800 font-body">
+
+  <!-- HEADER -->
+  <header class="bg-farm-dark shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 bg-farm-light rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <i data-lucide="leaf" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <span class="font-display text-white font-bold text-lg leading-none">Green Farm</span>
+            <span class="block text-farm-light text-xs">Agriculture</span>
+          </div>
+        </a>
+        <nav class="hidden md:flex items-center gap-8" aria-label="Main navigation">
+          <a href="index.html"    class="nav-link text-gray-300 font-semibold text-sm hover:text-white transition-colors">Home</a>
+          <a href="about.html"    class="nav-link active text-white font-semibold text-sm">About</a>
+          <a href="products.html" class="nav-link text-gray-300 font-semibold text-sm hover:text-white transition-colors">Products</a>
+          <a href="gallery.html"  class="nav-link text-gray-300 font-semibold text-sm hover:text-white transition-colors">Gallery</a>
+          <a href="contact.html"  class="nav-link text-gray-300 font-semibold text-sm hover:text-white transition-colors">Contact</a>
+        </nav>
+        <a href="contact.html" class="hidden md:inline-flex bg-farm-amber text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-orange-500 transition-colors hover:shadow-lg hover:shadow-orange-500/25">
+          Order Now
+        </a>
+        <button id="menuBtn" class="md:hidden text-white p-2 hover:bg-farm-green/30 rounded-lg transition-colors" aria-label="Toggle menu" aria-expanded="false">
+          <i data-lucide="menu" class="w-6 h-6" id="menuIcon"></i>
+        </button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="md:hidden bg-farm-dark border-t border-farm-green/30 px-4 pb-4">
+      <nav class="flex flex-col gap-1 pt-3" aria-label="Mobile navigation">
+        <a href="index.html"    class="text-gray-300 font-semibold py-2.5 px-3 rounded-lg hover:bg-farm-green/30 transition-colors">Home</a>
+        <a href="about.html"    class="text-white font-semibold py-2.5 px-3 rounded-lg bg-farm-green/30">About</a>
+        <a href="products.html" class="text-gray-300 font-semibold py-2.5 px-3 rounded-lg hover:bg-farm-green/30 transition-colors">Products</a>
+        <a href="gallery.html"  class="text-gray-300 font-semibold py-2.5 px-3 rounded-lg hover:bg-farm-green/30 transition-colors">Gallery</a>
+        <a href="contact.html"  class="text-gray-300 font-semibold py-2.5 px-3 rounded-lg hover:bg-farm-green/30 transition-colors">Contact</a>
+        <a href="contact.html"  class="bg-farm-amber text-white text-center py-2.5 rounded-full font-bold mt-2 hover:bg-orange-500 transition-colors">Order Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- PAGE HERO -->
+    <section class="relative bg-gradient-to-br from-farm-dark via-farm-green to-farm-dark py-24 md:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden" aria-label="Page header">
+      <!-- Decorative elements -->
+      <div class="absolute top-10 left-10 text-farm-light/10 float-anim">
+        <i data-lucide="sprout" class="w-24 h-24"></i>
+      </div>
+      <div class="absolute bottom-10 right-10 text-farm-light/10 float-anim-slow">
+        <i data-lucide="sun" class="w-20 h-20"></i>
+      </div>
+      <div class="absolute top-1/2 left-1/4 text-farm-amber/10 float-anim-slow">
+        <i data-lucide="wheat" class="w-16 h-16"></i>
+      </div>
+      <div class="max-w-7xl mx-auto text-center relative z-10">
+        <span class="text-farm-pale/80 text-sm font-semibold uppercase tracking-[0.2em]">Who We Are</span>
+        <h1 class="font-display text-white text-4xl md:text-6xl font-bold mt-4 mb-6 leading-tight">
+          About Green Farm<br class="hidden sm:block" /> Agriculture
+        </h1>
+        <p class="text-green-100/90 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+          A family-run farm with two decades of experience growing fresh, healthy food for the people of Botswana.
+        </p>
+        <div class="mt-10 flex flex-wrap justify-center gap-6 md:gap-10">
+          <div class="text-center">
+            <span class="block text-3xl md:text-4xl font-bold text-white counter-num" data-target="20">0</span>
+            <span class="text-green-200/70 text-sm">Years Farming</span>
+          </div>
+          <div class="w-px bg-farm-light/20 hidden sm:block"></div>
+          <div class="text-center">
+            <span class="block text-3xl md:text-4xl font-bold text-white counter-num" data-target="15">0</span>
+            <span class="text-green-200/70 text-sm">Hectares</span>
+          </div>
+          <div class="w-px bg-farm-light/20 hidden sm:block"></div>
+          <div class="text-center">
+            <span class="block text-3xl md:text-4xl font-bold text-white counter-num" data-target="500">0</span>
+            <span class="text-green-200/70 text-sm">Happy Customers</span>
+          </div>
+          <div class="w-px bg-farm-light/20 hidden sm:block"></div>
+          <div class="text-center">
+            <span class="block text-3xl md:text-4xl font-bold text-white counter-num" data-target="12">0</span>
+            <span class="text-green-200/70 text-sm">Team Members</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISSION & VISION -->
+    <section class="py-20 md:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" aria-labelledby="mission-heading">
+      <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div>
+          <span class="text-farm-green font-bold text-sm uppercase tracking-widest reveal">Our Purpose</span>
+          <h2 id="mission-heading" class="font-display text-farm-dark text-3xl md:text-4xl font-bold mt-2 mb-6 reveal reveal-delay-1">Why We Do What We Do</h2>
+          <p class="text-gray-700 leading-relaxed mb-4 reveal reveal-delay-2">
+            Green Farm Agriculture was born from a simple belief: every family deserves access to food that is genuinely fresh, grown with integrity, and fairly priced. When our founder, Mr. Goitseone Kgosi, started planting his first vegetable beds in 2005, he had one goal in mind to feed his community well.
+          </p>
+          <p class="text-gray-700 leading-relaxed mb-8 reveal reveal-delay-3">
+            Today, that vision has grown into a full farm operation covering over 15 hectares, with a dedicated team of 12 farm workers, a daily delivery service, and hundreds of satisfied customers across Botswana. The heart of the business has not changed though we still do things the right way.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 reveal reveal-delay-4">
+            <div class="bg-farm-pale rounded-xl p-5 border border-farm-light/20">
+              <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="target" class="w-5 h-5 text-farm-green"></i>
+                <p class="text-farm-green font-bold text-sm uppercase">Our Mission</p>
+              </div>
+              <p class="text-gray-700 text-sm">To provide fresh, natural food directly from our farm to every household in Botswana.</p>
+            </div>
+            <div class="bg-amber-50 rounded-xl p-5 border border-farm-amber/20">
+              <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="eye" class="w-5 h-5 text-farm-amber"></i>
+                <p class="text-farm-amber font-bold text-sm uppercase">Our Vision</p>
+              </div>
+              <p class="text-gray-700 text-sm">To be the most trusted and sustainable agriculture brand in Southern Africa.</p>
+            </div>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="img-overlay rounded-2xl shadow-lg reveal">
+            <img src="sunrise.png" alt="Green Farm fields at sunrise" class="w-full h-56 md:h-64 object-cover rounded-2xl" loading="lazy" />
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="img-overlay rounded-2xl shadow-lg reveal reveal-delay-1">
+              <img src="Harvest team at work.png" alt="Fresh vegetables from our farm" class="w-full h-36 md:h-44 object-cover rounded-2xl" loading="lazy" />
+            </div>
+            <div class="img-overlay rounded-2xl shadow-lg reveal reveal-delay-2">
+              <img src="Farm animals.png" alt="Farm animals roaming freely" class="w-full h-36 md:h-44 object-cover rounded-2xl" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OUR VALUES -->
+    <section class="bg-white py-20 md:py-28 px-4 sm:px-6 lg:px-8" aria-labelledby="values-heading">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-14">
+          <span class="text-farm-green font-bold text-sm uppercase tracking-widest reveal">What Guides Us</span>
+          <h2 id="values-heading" class="font-display text-farm-dark text-3xl md:text-4xl font-bold mt-2 reveal reveal-delay-1">Our Core Values</h2>
+          <p class="text-gray-600 mt-3 max-w-xl mx-auto reveal reveal-delay-2">Every decision we make is rooted in these principles.</p>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="value-card bg-farm-cream rounded-2xl p-6 text-center reveal reveal-delay-1">
+            <div class="w-14 h-14 bg-farm-pale rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="sprout" class="w-7 h-7 text-farm-green"></i>
+            </div>
+            <h3 class="font-bold text-farm-dark mb-2">Organic Farming</h3>
+            <p class="text-gray-600 text-sm">We use only natural compost and organic pest control methods. No harmful chemical.</p>
+          </div>
+          <div class="value-card bg-farm-cream rounded-2xl p-6 text-center reveal reveal-delay-2">
+            <div class="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="heart" class="w-7 h-7 text-farm-amber"></i>
+            </div>
+            <h3 class="font-bold text-farm-dark mb-2">Ethical Animal Care</h3>
+            <p class="text-gray-600 text-sm">Our animals live in open, clean spaces with plenty of food, water, and sunshine. Happy animals produce better food.</p>
+          </div>
+          <div class="value-card bg-farm-cream rounded-2xl p-6 text-center reveal reveal-delay-3">
+            <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="droplets" class="w-7 h-7 text-blue-500"></i>
+            </div>
+            <h3 class="font-bold text-farm-dark mb-2">Water Conservation</h3>
+            <p class="text-gray-600 text-sm">We use drip irrigation and rainwater harvesting to protect Botswana's precious water resources.</p>
+          </div>
+          <div class="value-card bg-farm-cream rounded-2xl p-6 text-center reveal reveal-delay-4">
+            <div class="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="users" class="w-7 h-7 text-green-600"></i>
+            </div>
+            <h3 class="font-bold text-farm-dark mb-2">Community First</h3>
+            <p class="text-gray-600 text-sm">We hire locally, train young farmers, and give back to the communities around us.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM SECTION -->
+    <section class="py-20 md:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" aria-labelledby="team-heading">
+      <div class="text-center mb-14">
+        <span class="text-farm-green font-bold text-sm uppercase tracking-widest reveal">Our People</span>
+        <h2 id="team-heading" class="font-display text-farm-dark text-3xl md:text-4xl font-bold mt-2 reveal reveal-delay-1">Meet the Team</h2>
+        <p class="text-gray-600 mt-3 max-w-xl mx-auto reveal reveal-delay-2">The people who wake up at dawn every day to bring fresh food to your family.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <article class="team-card bg-white rounded-2xl overflow-hidden shadow-sm text-center reveal reveal-delay-1">
+          <div class="relative h-48 overflow-hidden">
+            <img src="team 1.png" alt="Goitseone Kgosi" class="w-full h-full object-cover" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+          </div>
+          <div class="p-6">
+            <h3 class="font-display text-farm-dark text-xl font-bold">Goitseone Kgosi</h3>
+            <p class="text-farm-green text-sm font-semibold mb-3 inline-flex items-center gap-1">
+              <i data-lucide="crown" class="w-3.5 h-3.5"></i> Founder &amp; Farm Director
+            </p>
+            <p class="text-gray-600 text-sm">The heart and soul of Green Farm. Goitseone oversees all farming operations and keeps the farm running with passion and experience.</p>
+            <div class="flex justify-center gap-3 mt-4">
+              <a href="#" class="w-8 h-8 bg-farm-pale rounded-full flex items-center justify-center text-farm-green hover:bg-farm-green hover:text-white transition-colors" aria-label="Facebook">
+                <i data-lucide="facebook" class="w-4 h-4"></i>
+              </a>
+              <a href="#" class="w-8 h-8 bg-farm-pale rounded-full flex items-center justify-center text-farm-green hover:bg-farm-green hover:text-white transition-colors" aria-label="Twitter">
+                <i data-lucide="twitter" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+        </article>
+        <article class="team-card bg-white rounded-2xl overflow-hidden shadow-sm text-center reveal reveal-delay-2">
+          <div class="relative h-48 overflow-hidden">
+            <img src="team 2.png" alt="Boipelo Kgosi" class="w-full h-full object-cover" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+          </div>
+          <div class="p-6">
+            <h3 class="font-display text-farm-dark text-xl font-bold">Boipelo Kgosi</h3>
+            <p class="text-farm-amber text-sm font-semibold mb-3 inline-flex items-center gap-1">
+              <i data-lucide="settings" class="w-3.5 h-3.5"></i> Operations Manager
+            </p>
+            <p class="text-gray-600 text-sm">Goitseone's wife and business partner. Boipelo manages customer orders, deliveries, and the day-to-day running of the business.</p>
+            <div class="flex justify-center gap-3 mt-4">
+              <a href="#" class="w-8 h-8 bg-amber-50 rounded-full flex items-center justify-center text-farm-amber hover:bg-farm-amber hover:text-white transition-colors" aria-label="Facebook">
+                <i data-lucide="facebook" class="w-4 h-4"></i>
+              </a>
+              <a href="#" class="w-8 h-8 bg-amber-50 rounded-full flex items-center justify-center text-farm-amber hover:bg-farm-amber hover:text-white transition-colors" aria-label="Twitter">
+                <i data-lucide="twitter" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+        </article>
+        <article class="team-card bg-white rounded-2xl overflow-hidden shadow-sm text-center reveal reveal-delay-3">
+          <div class="relative h-48 overflow-hidden">
+            <img src="team 3.png" alt="Lethabo Dlamini" class="w-full h-full object-cover" loading="lazy" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+          </div>
+          <div class="p-6">
+            <h3 class="font-display text-farm-dark text-xl font-bold">Lethabo Dlamini</h3>
+            <p class="text-farm-green text-sm font-semibold mb-3 inline-flex items-center gap-1">
+              <i data-lucide="microscope" class="w-3.5 h-3.5"></i> Agricultural Specialist
+            </p>
+            <p class="text-gray-600 text-sm">Lethabo holds a BSc in Agriculture from UB and leads our soil health, crop rotation, and irrigation programmes.</p>
+            <div class="flex justify-center gap-3 mt-4">
+              <a href="#" class="w-8 h-8 bg-farm-pale rounded-full flex items-center justify-center text-farm-green hover:bg-farm-green hover:text-white transition-colors" aria-label="Facebook">
+                <i data-lucide="facebook" class="w-4 h-4"></i>
+              </a>
+              <a href="#" class="w-8 h-8 bg-farm-pale rounded-full flex items-center justify-center text-farm-green hover:bg-farm-green hover:text-white transition-colors" aria-label="Twitter">
+                <i data-lucide="twitter" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="bg-gradient-to-br from-farm-green to-farm-dark py-16 md:py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <div class="absolute top-0 right-0 text-white/5 float-anim">
+        <i data-lucide="wheat" class="w-40 h-40"></i>
+      </div>
+      <div class="absolute bottom-0 left-0 text-white/5 float-anim-slow">
+        <i data-lucide="sprout" class="w-32 h-32"></i>
+      </div>
+      <div class="max-w-3xl mx-auto text-center relative z-10">
+        <h2 class="font-display text-white text-3xl md:text-4xl font-bold mb-4 reveal">Ready to Taste the Difference?</h2>
+        <p class="text-green-100/90 text-lg mb-8 reveal reveal-delay-1">Order fresh, organic produce directly from our farm. Delivery available across Botswana.</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4 reveal reveal-delay-2">
+          <a href="contact.html" class="bg-farm-amber text-white px-8 py-3.5 rounded-full font-bold hover:bg-orange-500 transition-colors inline-flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-orange-500/25">
+            <i data-lucide="shopping-bag" class="w-5 h-5"></i> Order Now
+          </a>
+          <a href="products.html" class="bg-white/10 text-white px-8 py-3.5 rounded-full font-bold hover:bg-white/20 transition-colors border border-white/20 inline-flex items-center justify-center gap-2">
+            <i data-lucide="grid-3x3" class="w-5 h-5"></i> View Products
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-farm-dark text-gray-300 pt-16 pb-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 bg-farm-light rounded-full flex items-center justify-center">
+            <i data-lucide="leaf" class="w-5 h-5 text-white"></i>
+          </div>
+          <span class="font-display text-white font-bold text-lg">Green Farm Agriculture</span>
+        </div>
+        <p class="text-sm leading-relaxed mb-4 max-w-sm">Growing wholesome food for Botswana families since 2005.</p>
+        <div class="flex items-center gap-2 text-xs text-gray-500">
+          <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+          <span>Plot 1234, Tlokweng Road, Gaborone, Botswana</span>
+        </div>
+      </div>
+      <div>
+        <h3 class="font-bold text-white text-sm uppercase tracking-wider mb-4">Quick Links</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="index.html"    class="hover:text-farm-amber transition-colors inline-flex items-center gap-1.5"><i data-lucide="chevron-right" class="w-3 h-3"></i>Home</a></li>
+          <li><a href="about.html"    class="hover:text-farm-amber transition-colors inline-flex items-center gap-1.5"><i data-lucide="chevron-right" class="w-3 h-3"></i>About Us</a></li>
+          <li><a href="products.html" class="hover:text-farm-amber transition-colors inline-flex items-center gap-1.5"><i data-lucide="chevron-right" class="w-3 h-3"></i>Products</a></li>
+          <li><a href="gallery.html"  class="hover:text-farm-amber transition-colors inline-flex items-center gap-1.5"><i data-lucide="chevron-right" class="w-3 h-3"></i>Gallery</a></li>
+          <li><a href="contact.html"  class="hover:text-farm-amber transition-colors inline-flex items-center gap-1.5"><i data-lucide="chevron-right" class="w-3 h-3"></i>Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-bold text-white text-sm uppercase tracking-wider mb-4">Get In Touch</h3>
+        <ul class="space-y-3 text-sm">
+          <li class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4 text-farm-light"></i> +267 7123 4567</li>
+          <li class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-farm-light"></i> info@greenfarm.co.bw</li>
+          <li class="flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4 text-farm-light"></i> Mon–Sat: 6am – 6pm</li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-gray-700 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+      <p>&copy; 2025 Green Farm Agriculture. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a href="#" class="hover:text-farm-amber transition-colors" aria-label="Facebook"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+        <a href="#" class="hover:text-farm-amber transition-colors" aria-label="Instagram"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+        <a href="#" class="hover:text-farm-amber transition-colors" aria-label="Twitter"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    let menuOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('open', menuOpen);
+      menuBtn.setAttribute('aria-expanded', menuOpen);
+      // Swap icon
+      const icon = menuBtn.querySelector('i');
+      icon.setAttribute('data-lucide', menuOpen ? 'x' : 'menu');
+      lucide.createIcons();
+    });
+
+    // Scroll reveal with IntersectionObserver
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // Animated counters
+    function animateCounters() {
+      const counters = document.querySelectorAll('.counter-num');
+      counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        const duration = 2000;
+        const startTime = performance.now();
+
+        function updateCounter(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.round(eased * target);
+          counter.textContent = current >= 500 ? current + '+' : current;
+
+          if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+          }
+        }
+
+        requestAnimationFrame(updateCounter);
+      });
+    }
+
+    // Start counters when hero section is visible
+    const heroSection = document.querySelector('[aria-label="Page header"]');
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounters();
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    counterObserver.observe(heroSection);
+
+    // Close mobile menu on link click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        menuOpen = false;
+        mobileMenu.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        const icon = menuBtn.querySelector('i');
+        icon.setAttribute('data-lucide', 'menu');
+        lucide.createIcons();
+      });
+    });
+  </script>
+</body>
+</html>
