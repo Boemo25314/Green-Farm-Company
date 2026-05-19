@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Shop fresh vegetables, fruits, eggs, and dairy products from Green Farm Agriculture." />
+  <title>Our Products | Green Farm Agriculture</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            farm: { green:'#2d6a4f', light:'#52b788', pale:'#d8f3dc', amber:'#f4a261', cream:'#fefae0', dark:'#1b4332' }
+          },
+          fontFamily: { display:['"Playfair Display"','Georgia','serif'], body:['"Nunito"','sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family:'Nunito',sans-serif; }
+    .nav-link { position:relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:50%; width:0; height:2px; background:#f4a261; transition:width .3s, left .3s; }
+    .nav-link:hover::after, .nav-link.active::after { width:100%; left:0; }
+
+    /* Product card animations */
+    .product-card { transition: transform .3s ease, box-shadow .3s ease, opacity .4s ease; }
+    .product-card:hover { transform:translateY(-6px); box-shadow:0 20px 40px rgba(0,0,0,.1); }
+    .product-card .card-img { transition: transform .5s ease; }
+    .product-card:hover .card-img { transform: scale(1.08); }
+    .product-card .order-btn { transition: all .3s ease; }
+    .product-card:hover .order-btn { transform: scale(1.05); }
+
+    /* Filter buttons */
+    .filter-btn { transition: all .3s ease; }
+    .filter-btn.active { background:#2d6a4f; color:#fff; border-color:#2d6a4f; }
+    .filter-btn:not(.active):hover { background:#2d6a4f; color:#fff; border-color:#2d6a4f; }
+
+    /* Card show/hide animation */
+    .product-card.card-hidden { opacity:0; transform:scale(.92); pointer-events:none; position:absolute; visibility:hidden; }
+    .product-card.card-visible { opacity:1; transform:scale(1); position:relative; visibility:visible; }
+
+    /* Section reveal */
+    .reveal-section { opacity:0; transform:translateY(30px); transition:opacity .7s ease, transform .7s ease; }
+    .reveal-section.revealed { opacity:1; transform:translateY(0); }
+
+    /* Staggered children */
+    .stagger-child { opacity:0; transform:translateY(20px); transition:opacity .5s ease, transform .5s ease; }
+    .stagger-child.revealed { opacity:1; transform:translateY(0); }
+
+    /* Floating hero decorations */
+    @keyframes floatSlow { 0%,100%{ transform:translateY(0) rotate(0deg); } 50%{ transform:translateY(-15px) rotate(5deg); } }
+    @keyframes floatMed { 0%,100%{ transform:translateY(0) rotate(0deg); } 50%{ transform:translateY(-10px) rotate(-5deg); } }
+    .float-slow { animation: floatSlow 6s ease-in-out infinite; }
+    .float-med { animation: floatMed 4s ease-in-out infinite; }
+
+    /* Mobile menu */
+    #mobileMenu { max-height:0; overflow:hidden; transition:max-height .4s ease, padding .3s ease; padding-top:0; padding-bottom:0; }
+    #mobileMenu.open { max-height:400px; padding-top:0.75rem; padding-bottom:1rem; }
+
+    /* Badge pulse */
+    @keyframes badgePulse { 0%,100%{ box-shadow:0 0 0 0 rgba(82,183,136,.4); } 70%{ box-shadow:0 0 0 8px rgba(82,183,136,0); } }
+    .badge-pulse { animation: badgePulse 2s infinite; }
+
+    /* CTA shimmer */
+    @keyframes shimmer { 0%{ background-position:-200% center; } 100%{ background-position:200% center; } }
+    .shimmer-btn { background-size:200% auto; animation: shimmer 3s linear infinite; }
+
+    /* Toast */
+    .toast { transform:translateY(100px); opacity:0; transition:all .4s ease; }
+    .toast.show { transform:translateY(0); opacity:1; }
+
+    /* Category section transition */
+    .category-section { transition: opacity .4s ease, max-height .5s ease; overflow:hidden; }
+    .category-section.section-hidden { opacity:0; max-height:0 !important; margin:0 !important; padding:0 !important; }
+    .category-section.section-visible { opacity:1; max-height:3000px; }
+
+    /* Quantity controls */
+    .qty-btn { transition: all .2s ease; }
+    .qty-btn:active { transform:scale(.9); }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#fefae0; }
+    ::-webkit-scrollbar-thumb { background:#52b788; border-radius:4px; }
+    ::-webkit-scrollbar-thumb:hover { background:#2d6a4f; }
+  </style>
+</head>
+<body class="bg-farm-cream text-gray-800 font-body">
+
+  <!-- HEADER -->
+  <header class="bg-farm-dark shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-farm-light rounded-full flex items-center justify-center">
+            <i data-lucide="sprout" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <span class="font-display text-white font-bold text-lg leading-none">Green Farm</span>
+            <span class="block text-farm-light text-xs">Agriculture</span>
+          </div>
+        </a>
+        <nav class="hidden md:flex items-center gap-8" aria-label="Main navigation">
+          <a href="index.html"    class="nav-link text-gray-300 font-semibold text-sm hover:text-white transition-colors">Home</a>
+          <a href="about.html"    class="nav-link text-gray-300 font-semibold text-sm hover:text-white transition-colors">About</a>
+          <a href="products.html" class="nav-link active text-white font-semibold text-sm hover:text-farm-amber transition-colors">Products</a>
+          <a href="gallery.html"  class="nav-link text-gray-300 font-semibold text-sm hover:text-white transition-colors">Gallery</a>
+          <a href="contact.html"  class="nav-link text-gray-300 font-semibold text-sm hover:text-white transition-colors">Contact</a>
+        </nav>
+        <div class="flex items-center gap-4">
+          <button id="cartBtn" class="relative text-white hover:text-farm-amber transition-colors" aria-label="Shopping cart">
+            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+            <span id="cartCount" class="absolute -top-2 -right-2 bg-farm-amber text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold hidden">0</span>
+          </button>
+          <a href="contact.html" class="hidden md:inline-flex bg-farm-amber text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-orange-500 transition-colors">Order Now</a>
+          <button id="menuBtn" class="md:hidden text-white" aria-label="Toggle menu" aria-expanded="false">
+            <i data-lucide="menu" class="w-6 h-6" id="menuIcon"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="mobileMenu" class="md:hidden bg-farm-dark border-t border-farm-green px-4">
+      <nav class="flex flex-col gap-3 pt-3" aria-label="Mobile navigation">
+        <a href="index.html"    class="text-gray-300 font-semibold py-2 border-b border-green-900 hover:text-white transition-colors">Home</a>
+        <a href="about.html"    class="text-gray-300 font-semibold py-2 border-b border-green-900 hover:text-white transition-colors">About</a>
+        <a href="products.html" class="text-white font-semibold py-2 border-b border-green-900">Products</a>
+        <a href="gallery.html"  class="text-gray-300 font-semibold py-2 border-b border-green-900 hover:text-white transition-colors">Gallery</a>
+        <a href="contact.html"  class="text-gray-300 font-semibold py-2 hover:text-white transition-colors">Contact</a>
+        <a href="contact.html"  class="bg-farm-amber text-white text-center py-2 rounded-full font-bold mt-2">Order Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- PAGE HERO -->
+    <section class="bg-gradient-to-br from-farm-dark via-farm-green to-farm-dark py-20 md:py-28 px-4 sm:px-6 lg:px-8 relative overflow-hidden" aria-label="Page header">
+      <!-- Floating decorations -->
+      <div class="absolute inset-0 pointer-events-none">
+        <div class="float-slow absolute top-8 left-[10%] text-farm-light opacity-20"><i data-lucide="leaf" class="w-12 h-12"></i></div>
+        <div class="float-med absolute top-16 right-[15%] text-farm-light opacity-15"><i data-lucide="sun" class="w-10 h-10"></i></div>
+        <div class="float-slow absolute bottom-12 left-[20%] text-farm-light opacity-10"><i data-lucide="apple" class="w-14 h-14"></i></div>
+        <div class="float-med absolute bottom-8 right-[25%] text-farm-light opacity-15"><i data-lucide="carrot" class="w-10 h-10"></i></div>
+        <div class="float-slow absolute top-1/2 left-[5%] text-farm-light opacity-10"><i data-lucide="wheat" class="w-16 h-16"></i></div>
+        <div class="float-med absolute top-1/3 right-[8%] text-farm-light opacity-10"><i data-lucide="egg" class="w-12 h-12"></i></div>
+      </div>
+      <div class="max-w-7xl mx-auto text-center relative z-10">
+        <span class="text-farm-pale text-sm font-semibold uppercase tracking-widest">What We Offer</span>
+        <h1 class="font-display text-white text-4xl md:text-5xl lg:text-6xl font-bold mt-3 mb-4">Our Fresh Products</h1>
+        <p class="text-green-100 text-lg max-w-2xl mx-auto">Everything grown and harvested on our farm with care. No preservatives, no middlemen — just fresh, honest food.</p>
+        <!-- Quick stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10 max-w-3xl mx-auto">
+          <div class="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3">
+            <p class="text-farm-amber font-bold text-2xl" data-count="14">0</p>
+            <p class="text-green-200 text-xs font-semibold uppercase tracking-wider">Products</p>
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3">
+            <p class="text-farm-amber font-bold text-2xl" data-count="4">0</p>
+            <p class="text-green-200 text-xs font-semibold uppercase tracking-wider">Categories</p>
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3">
+            <p class="text-farm-amber font-bold text-2xl">100%</p>
+            <p class="text-green-200 text-xs font-semibold uppercase tracking-wider">Organic</p>
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3">
+            <p class="text-farm-amber font-bold text-2xl">Daily</p>
+            <p class="text-green-200 text-xs font-semibold uppercase tracking-wider">Harvest</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FILTER TABS -->
+    <section class="py-8 md:py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal-section" aria-label="Product filters">
+      <div class="flex flex-wrap gap-3 justify-center" role="group" aria-label="Filter products by category">
+        <button class="filter-btn active bg-farm-green text-white px-5 py-2.5 rounded-full font-semibold text-sm border border-farm-green" data-filter="all">
+          <span class="flex items-center gap-2"><i data-lucide="grid-3x3" class="w-4 h-4"></i> All Products</span>
+        </button>
+        <button class="filter-btn bg-white border border-gray-200 text-gray-700 px-5 py-2.5 rounded-full font-semibold text-sm" data-filter="vegetables">
+          <span class="flex items-center gap-2"><i data-lucide="salad" class="w-4 h-4"></i> Vegetables</span>
+        </button>
+        <button class="filter-btn bg-white border border-gray-200 text-gray-700 px-5 py-2.5 rounded-full font-semibold text-sm" data-filter="fruits">
+          <span class="flex items-center gap-2"><i data-lucide="apple" class="w-4 h-4"></i> Fruits</span>
+        </button>
+        <button class="filter-btn bg-white border border-gray-200 text-gray-700 px-5 py-2.5 rounded-full font-semibold text-sm" data-filter="eggs">
+          <span class="flex items-center gap-2"><i data-lucide="egg" class="w-4 h-4"></i> Eggs</span>
+        </button>
+        <button class="filter-btn bg-white border border-gray-200 text-gray-700 px-5 py-2.5 rounded-full font-semibold text-sm" data-filter="dairy">
+          <span class="flex items-center gap-2"><i data-lucide="milk" class="w-4 h-4"></i> Dairy</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- VEGETABLES SECTION -->
+    <section id="vegetables" class="category-section section-visible px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-16" aria-labelledby="vegetables-heading" data-section="vegetables">
+      <div class="flex items-center gap-4 mb-8 reveal-section">
+        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+          <i data-lucide="salad" class="w-6 h-6 text-farm-green"></i>
+        </div>
+        <div>
+          <h2 id="vegetables-heading" class="font-display text-farm-dark text-2xl font-bold">Fresh Vegetables</h2>
+          <p class="text-gray-500 text-sm">Harvested fresh every morning</p>
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Tomato -->
+        <article class="product-card card-visible bg-white rounded-2xl overflow-hidden shadow-sm stagger-child" data-category="vegetables">
+          <div class="h-48 overflow-hidden relative">
+            <img src="red tomato.png" alt="Red Tomatoes" class="card-img w-full h-full object-cover" loading="lazy" />
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold text-green-700 bg-green-100/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="leaf" class="w-3 h-3"></i> Organic</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">Vegetables</span>
+            <h3 class="font-bold text-farm-dark text-lg mt-2 mb-1">Red Tomatoes</h3>
+            <p class="text-gray-500 text-sm mb-4">Juicy, vine-ripened tomatoes. Perfect for salads, sauces, and cooking.</p>
+            <div class="flex items-center justify-between">
+              <span class="text-farm-green font-bold text-lg">P 15.00 <span class="text-gray-400 text-xs font-normal">/ kg</span></span>
+              <button onclick="addToCart('Red Tomatoes', 15)" class="order-btn bg-farm-green text-white text-xs px-4 py-2 rounded-full hover:bg-farm-dark transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+            </div>
+          </div>
+        </article>
+        <!-- Spinach -->
+        <article class="product-card card-visible bg-white rounded-2xl overflow-hidden shadow-sm stagger-child" data-category="vegetables">
+          <div class="h-48 overflow-hidden relative">
+            <img src="Fresh Spinach.png" alt="Fresh Spinach" class="card-img w-full h-full object-cover" loading="lazy" />
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold text-green-700 bg-green-100/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="leaf" class="w-3 h-3"></i> Organic</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">Vegetables</span>
+            <h3 class="font-bold text-farm-dark text-lg mt-2 mb-1">Fresh Spinach</h3>
+            <p class="text-gray-500 text-sm mb-4">Dark, leafy spinach rich in iron. Harvested fresh every morning.</p>
+            <div class="flex items-center justify-between">
+              <span class="text-farm-green font-bold text-lg">P 8.00 <span class="text-gray-400 text-xs font-normal">/ bunch</span></span>
+              <button onclick="addToCart('Fresh Spinach', 8)" class="order-btn bg-farm-green text-white text-xs px-4 py-2 rounded-full hover:bg-farm-dark transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+            </div>
+          </div>
+        </article>
+        <!-- Carrots -->
+        <article class="product-card card-visible bg-white rounded-2xl overflow-hidden shadow-sm stagger-child" data-category="vegetables">
+          <div class="h-48 overflow-hidden relative">
+            <img src="Fresh Carrots.png" alt="Fresh Carrots" class="card-img w-full h-full object-cover" loading="lazy" />
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold text-green-700 bg-green-100/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="leaf" class="w-3 h-3"></i> Organic</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">Vegetables</span>
+            <h3 class="font-bold text-farm-dark text-lg mt-2 mb-1">Fresh Carrots</h3>
+            <p class="text-gray-500 text-sm mb-4">Sweet, crunchy carrots grown in rich, organic soil. Great raw or cooked.</p>
+            <div class="flex items-center justify-between">
+              <span class="text-farm-green font-bold text-lg">P 12.00 <span class="text-gray-400 text-xs font-normal">/ kg</span></span>
+              <button onclick="addToCart('Fresh Carrots', 12)" class="order-btn bg-farm-green text-white text-xs px-4 py-2 rounded-full hover:bg-farm-dark transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+            </div>
+          </div>
+        </article>
+        <!-- Onions -->
+        <article class="product-card card-visible bg-white rounded-2xl overflow-hidden shadow-sm stagger-child" data-category="vegetables">
+          <div class="h-48 overflow-hidden relative">
+            <img src="Yellow Onions.png" alt="Yellow Onions" class="card-img w-full h-full object-cover" loading="lazy" />
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold text-green-700 bg-green-100/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="leaf" class="w-3 h-3"></i> Organic</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">Vegetables</span>
+            <h3 class="font-bold text-farm-dark text-lg mt-2 mb-1">Yellow Onions</h3>
+            <p class="text-gray-500 text-sm mb-4">Full-flavoured onions that are a staple in Botswana kitchens. Sold per bag.</p>
+            <div class="flex items-center justify-between">
+              <span class="text-farm-green font-bold text-lg">P 20.00 <span class="text-gray-400 text-xs font-normal">/ 3kg bag</span></span>
+              <button onclick="addToCart('Yellow Onions', 20)" class="order-btn bg-farm-green text-white text-xs px-4 py-2 rounded-full hover:bg-farm-dark transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- FRUITS SECTION -->
+    <section id="fruits" class="category-section section-visible px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-16 bg-amber-50 rounded-3xl py-12" aria-labelledby="fruits-heading" data-section="fruits">
+      <div class="flex items-center gap-4 mb-8 reveal-section">
+        <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+          <i data-lucide="apple" class="w-6 h-6 text-farm-amber"></i>
+        </div>
+        <div>
+          <h2 id="fruits-heading" class="font-display text-farm-dark text-2xl font-bold">Seasonal Fruits</h2>
+          <p class="text-gray-500 text-sm">Naturally sweet and sun-ripened</p>
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Mangoes -->
+        <article class="product-card card-visible bg-white rounded-2xl overflow-hidden shadow-sm stagger-child" data-category="fruits">
+          <div class="h-48 overflow-hidden relative">
+            <img src="Fresh Mangoes.png" alt="Fresh Mangoes" class="card-img w-full h-full object-cover" loading="lazy" />
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold text-amber-700 bg-amber-100/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> Seasonal</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-semibold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">Fruits</span>
+            <h3 class="font-bold text-farm-dark text-lg mt-2 mb-1">Fresh Mangoes</h3>
+            <p class="text-gray-500 text-sm mb-4">Sweet, golden mangoes. In season from October to January.</p>
+            <div class="flex items-center justify-between">
+              <span class="text-farm-green font-bold text-lg">P 25.00 <span class="text-gray-400 text-xs font-normal">/ kg</span></span>
+              <button onclick="addToCart('Fresh Mangoes', 25)" class="order-btn bg-farm-amber text-white text-xs px-4 py-2 rounded-full hover:bg-orange-500 transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+            </div>
+          </div>
+        </article>
+        <!-- Oranges -->
+        <article class="product-card card-visible bg-white rounded-2xl overflow-hidden shadow-sm stagger-child" data-category="fruits">
+          <div class="h-48 overflow-hidden relative">
+            <img src="Navel Oranges.png" alt="Navel Oranges" class="card-img w-full h-full object-cover" loading="lazy" />
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold text-amber-700 bg-amber-100/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> Seasonal</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-semibold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">Fruits</span>
+            <h3 class="font-bold text-farm-dark text-lg mt-2 mb-1">Navel Oranges</h3>
+            <p class="text-gray-500 text-sm mb-4">Juicy, seedless oranges that are perfect for juicing or eating fresh.</p>
+            <div class="flex items-center justify-between">
+              <span class="text-farm-green font-bold text-lg">P 18.00 <span class="text-gray-400 text-xs font-normal">/ kg</span></span>
+              <button onclick="addToCart('Navel Oranges', 18)" class="order-btn bg-farm-amber text-white text-xs px-4 py-2 rounded-full hover:bg-orange-500 transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+            </div>
+          </div>
+        </article>
+        <!-- Watermelon -->
+        <article class="product-card card-visible bg-white rounded-2xl overflow-hidden shadow-sm stagger-child" data-category="fruits">
+          <div class="h-48 overflow-hidden relative">
+            <img src="watermelon slice.png" alt="Watermelon" class="card-img w-full h-full object-cover" loading="lazy" />
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold text-amber-700 bg-amber-100/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> Seasonal</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-semibold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">Fruits</span>
+            <h3 class="font-bold text-farm-dark text-lg mt-2 mb-1">Watermelon</h3>
+            <p class="text-gray-500 text-sm mb-4">Large, sweet watermelons — a summer favourite for the whole family.</p>
+            <div class="flex items-center justify-between">
+              <span class="text-farm-green font-bold text-lg">P 30.00 <span class="text-gray-400 text-xs font-normal">each</span></span>
+              <button onclick="addToCart('Watermelon', 30)" class="order-btn bg-farm-amber text-white text-xs px-4 py-2 rounded-full hover:bg-orange-500 transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+            </div>
+          </div>
+        </article>
+        <!-- Pawpaw -->
+        <article class="product-card card-visible bg-white rounded-2xl overflow-hidden shadow-sm stagger-child" data-category="fruits">
+          <div class="h-48 overflow-hidden relative">
+            <img src="Pawpaw.png" alt="Pawpaw" class="card-img w-full h-full object-cover" loading="lazy" />
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold text-amber-700 bg-amber-100/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> Seasonal</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-semibold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">Fruits</span>
+            <h3 class="font-bold text-farm-dark text-lg mt-2 mb-1">Pawpaw (Papaya)</h3>
+            <p class="text-gray-500 text-sm mb-4">Ripe, buttery pawpaw. Excellent for breakfast, smoothies, and desserts.</p>
+            <div class="flex items-center justify-between">
+              <span class="text-farm-green font-bold text-lg">P 20.00 <span class="text-gray-400 text-xs font-normal">each</span></span>
+              <button onclick="addToCart('Pawpaw', 20)" class="order-btn bg-farm-amber text-white text-xs px-4 py-2 rounded-full hover:bg-orange-500 transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- EGGS SECTION -->
+    <section id="eggs" class="category-section section-visible px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-16" aria-labelledby="eggs-heading" data-section="eggs">
+      <div class="flex items-center gap-4 mb-8 reveal-section">
+        <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+          <i data-lucide="egg" class="w-6 h-6 text-yellow-600"></i>
+        </div>
+        <div>
+          <h2 id="eggs-heading" class="font-display text-farm-dark text-2xl font-bold">Farm Fresh Eggs</h2>
+          <p class="text-gray-500 text-sm">Free-range, rich golden yolks</p>
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Full tray -->
+        <article class="product-card card-visible bg-white rounded-2xl overflow-hidden shadow-sm stagger-child" data-category="eggs">
+          <div class="h-48 overflow-hidden relative">
+            <img src="tray eggs.png" alt="Free-Range Eggs Tray" class="card-img w-full h-full object-cover" loading="lazy" />
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold text-yellow-700 bg-yellow-100/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="heart" class="w-3 h-3"></i> Free-Range</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-semibold text-yellow-600 bg-yellow-50 px-2.5 py-1 rounded-full">Eggs</span>
+            <h3 class="font-bold text-farm-dark text-lg mt-2 mb-1">Free-Range Eggs (Tray of 30)</h3>
+            <p class="text-gray-500 text-sm mb-4">Our hens roam freely in open fields. Rich, flavourful eggs with deep orange yolks.</p>
+            <div class="flex items-center justify-between">
+              <span class="text-farm-green font-bold text-lg">P 45.00 <span class="text-gray-400 text-xs font-normal">/ tray</span></span>
+              <button onclick="addToCart('Free-Range Eggs (30)', 45)" class="order-btn bg-farm-green text-white text-xs px-4 py-2 rounded-full hover:bg-farm-dark transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+            </div>
+          </div>
+        </article>
+        <!-- Half tray -->
+        <article class="product-card card-visible bg-white rounded-2xl overflow-hidden shadow-sm stagger-child" data-category="eggs">
+          <div class="h-48 overflow-hidden relative">
+            <img src="Half Tray.png" alt="Free-Range Eggs Half Tray" class="card-img w-full h-full object-cover" loading="lazy" />
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold text-yellow-700 bg-yellow-100/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="heart" class="w-3 h-3"></i> Free-Range</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-semibold text-yellow-600 bg-yellow-50 px-2.5 py-1 rounded-full">Eggs</span>
+            <h3 class="font-bold text-farm-dark text-lg mt-2 mb-1">Free-Range Eggs (Half Tray)</h3>
+            <p class="text-gray-500 text-sm mb-4">Same great quality, just a smaller quantity — ideal for smaller households.</p>
+            <div class="flex items-center justify-between">
+              <span class="text-farm-green font-bold text-lg">P 25.00 <span class="text-gray-400 text-xs font-normal">/ 15 eggs</span></span>
+              <button onclick="addToCart('Free-Range Eggs (15)', 25)" class="order-btn bg-farm-green text-white text-xs px-4 py-2 rounded-full hover:bg-farm-dark transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- DAIRY SECTION -->
+    <section id="dairy" class="category-section section-visible px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-20 bg-blue-50 rounded-3xl py-12" aria-labelledby="dairy-heading" data-section="dairy">
+      <div class="flex items-center gap-4 mb-8 reveal-section">
+        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+          <i data-lucide="milk" class="w-6 h-6 text-blue-600"></i>
+        </div>
+        <div>
+          <h2 id="dairy-heading" class="font-display text-farm-dark text-2xl font-bold">Dairy Products</h2>
+          <p class="text-gray-500 text-sm">From our cows to your table</p>
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Milk -->
+        <article class="product-card card-visible bg-white rounded-2xl overflow-hidden shadow-sm stagger-child" data-category="dairy">
+          <div class="h-48 overflow-hidden relative">
+            <img src="Fresh dairy.png" alt="Fresh Cow's Milk" class="card-img w-full h-full object-cover" loading="lazy" />
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold text-blue-700 bg-blue-100/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="droplets" class="w-3 h-3"></i> Fresh Daily</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">Dairy</span>
+            <h3 class="font-bold text-farm-dark text-lg mt-2 mb-1">Fresh Cow's Milk</h3>
+            <p class="text-gray-500 text-sm mb-4">Pasteurised whole milk, bottled fresh daily. Creamy and full of natural goodness.</p>
+            <div class="flex items-center justify-between">
+              <span class="text-farm-green font-bold text-lg">P 10.00 <span class="text-gray-400 text-xs font-normal">/ litre</span></span>
+              <button onclick="addToCart('Fresh Milk', 10)" class="order-btn bg-farm-green text-white text-xs px-4 py-2 rounded-full hover:bg-farm-dark transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+            </div>
+          </div>
+        </article>
+        <!-- Butter -->
+        <article class="product-card card-visible bg-white rounded-2xl overflow-hidden shadow-sm stagger-child" data-category="dairy">
+          <div class="h-48 overflow-hidden relative">
+            <img src="Farm Butter.png" alt="Farm Butter" class="card-img w-full h-full object-cover" loading="lazy" />
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold text-blue-700 bg-blue-100/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="hand-metal" class="w-3 h-3"></i> Handmade</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">Dairy</span>
+            <h3 class="font-bold text-farm-dark text-lg mt-2 mb-1">Farm Butter</h3>
+            <p class="text-gray-500 text-sm mb-4">Churned by hand from fresh cream. Rich, golden, and absolutely delicious.</p>
+            <div class="flex items-center justify-between">
+              <span class="text-farm-green font-bold text-lg">P 28.00 <span class="text-gray-400 text-xs font-normal">/ 250g</span></span>
+              <button onclick="addToCart('Farm Butter', 28)" class="order-btn bg-farm-green text-white text-xs px-4 py-2 rounded-full hover:bg-farm-dark transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+            </div>
+          </div>
+        </article>
+        <!-- Yoghurt -->
+        <article class="product-card card-visible bg-white rounded-2xl overflow-hidden shadow-sm stagger-child" data-category="dairy">
+          <div class="h-48 overflow-hidden relative">
+            <img src="Natural Yoghurt.png" alt="Natural Yoghurt" class="card-img w-full h-full object-cover" loading="lazy" />
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold text-blue-700 bg-blue-100/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="heart" class="w-3 h-3"></i> Live Cultures</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">Dairy</span>
+            <h3 class="font-bold text-farm-dark text-lg mt-2 mb-1">Natural Yoghurt</h3>
+            <p class="text-gray-500 text-sm mb-4">Thick, creamy yoghurt with live cultures. No added sugar, no artificial flavours.</p>
+            <div class="flex items-center justify-between">
+              <span class="text-farm-green font-bold text-lg">P 18.00 <span class="text-gray-400 text-xs font-normal">/ 500ml</span></span>
+              <button onclick="addToCart('Natural Yoghurt', 18)" class="order-btn bg-farm-green text-white text-xs px-4 py-2 rounded-full hover:bg-farm-dark transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+            </div>
+          </div>
+        </article>
+        <!-- Cream -->
+        <article class="product-card card-visible bg-white rounded-2xl overflow-hidden shadow-sm stagger-child" data-category="dairy">
+          <div class="h-48 overflow-hidden relative">
+            <img src="Fresh Cream.png" alt="Fresh Cream" class="card-img w-full h-full object-cover" loading="lazy" />
+            <div class="absolute top-3 left-3">
+              <span class="text-xs font-bold text-blue-700 bg-blue-100/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1"><i data-lucide="droplets" class="w-3 h-3"></i> Fresh Daily</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">Dairy</span>
+            <h3 class="font-bold text-farm-dark text-lg mt-2 mb-1">Fresh Cream</h3>
+            <p class="text-gray-500 text-sm mb-4">Thick pouring cream, perfect for desserts, soups, sauces, and coffee.</p>
+            <div class="flex items-center justify-between">
+              <span class="text-farm-green font-bold text-lg">P 22.00 <span class="text-gray-400 text-xs font-normal">/ 250ml</span></span>
+              <button onclick="addToCart('Fresh Cream', 22)" class="order-btn bg-farm-green text-white text-xs px-4 py-2 rounded-full hover:bg-farm-dark transition-colors flex items-center gap-1.5">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ORDER CTA -->
+    <section class="bg-gradient-to-br from-farm-green to-farm-dark py-20 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden reveal-section">
+      <div class="absolute inset-0 pointer-events-none">
+        <div class="float-slow absolute top-6 left-[12%] text-white/10"><i data-lucide="shopping-bag" class="w-16 h-16"></i></div>
+        <div class="float-med absolute bottom-8 right-[15%] text-white/10"><i data-lucide="truck" class="w-14 h-14"></i></div>
+      </div>
+      <div class="max-w-2xl mx-auto relative z-10">
+        <div class="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-6">
+          <i data-lucide="truck" class="w-8 h-8 text-farm-amber"></i>
+        </div>
+        <h2 class="font-display text-white text-3xl md:text-4xl font-bold mb-4">Ready to Place an Order?</h2>
+        <p class="text-green-100 mb-8 text-lg">Contact us to arrange delivery or pickup. We deliver to Gaborone and surrounding areas Monday to Saturday.</p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="contact.html" class="bg-farm-amber text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-orange-500 transition-all hover:scale-105 shimmer-btn inline-flex items-center gap-2">
+            <i data-lucide="send" class="w-5 h-5"></i> Get In Touch to Order
+          </a>
+          <a href="tel:+26771234567" class="bg-white/10 backdrop-blur-sm text-white border border-white/30 px-8 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-all hover:scale-105 inline-flex items-center gap-2">
+            <i data-lucide="phone" class="w-5 h-5"></i> Call Us Now
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- CART SIDEBAR -->
+  <div id="cartOverlay" class="fixed inset-0 bg-black/40 z-50 hidden opacity-0 transition-opacity duration-300" onclick="closeCart()"></div>
+  <aside id="cartSidebar" class="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+    <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+      <h2 class="font-display text-farm-dark text-xl font-bold flex items-center gap-2">
+        <i data-lucide="shopping-bag" class="w-5 h-5 text-farm-green"></i> Your Cart
+      </h2>
+      <button onclick="closeCart()" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
+        <i data-lucide="x" class="w-5 h-5 text-gray-600"></i>
+      </button>
+    </div>
+    <div id="cartItems" class="flex-1 overflow-y-auto p-6">
+      <div id="emptyCart" class="text-center py-16">
+        <div class="w-20 h-20 bg-farm-pale rounded-full flex items-center justify-center mx-auto mb-4">
+          <i data-lucide="shopping-bag" class="w-10 h-10 text-farm-green"></i>
+        </div>
+        <p class="text-gray-500 font-semibold">Your cart is empty</p>
+        <p class="text-gray-400 text-sm mt-1">Add some fresh products to get started!</p>
+      </div>
+      <div id="cartList" class="space-y-4 hidden"></div>
+    </div>
+    <div id="cartFooter" class="p-6 border-t border-gray-100 hidden">
+      <div class="flex justify-between mb-2">
+        <span class="text-gray-600 font-semibold">Subtotal</span>
+        <span id="cartTotal" class="text-farm-green font-bold text-lg">P 0.00</span>
+      </div>
+      <p class="text-gray-400 text-xs mb-4">Delivery fees calculated at checkout</p>
+      <a href="contact.html" class="block bg-farm-green text-white text-center py-3.5 rounded-full font-bold hover:bg-farm-dark transition-colors">
+        Proceed to Order
+      </a>
+      <button onclick="clearCart()" class="block w-full text-gray-400 text-sm font-semibold mt-3 hover:text-red-500 transition-colors">Clear Cart</button>
+    </div>
+  </aside>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast fixed bottom-6 right-6 bg-farm-dark text-white px-6 py-3 rounded-xl shadow-xl z-50 flex items-center gap-3">
+    <i data-lucide="check-circle" class="w-5 h-5 text-farm-light"></i>
+    <span id="toastMsg">Item added to cart!</span>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-farm-dark text-gray-300 pt-16 pb-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
+      <div class="md:col-span-2">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 bg-farm-light rounded-full flex items-center justify-center">
+            <i data-lucide="sprout" class="w-5 h-5 text-white"></i>
+          </div>
+          <span class="font-display text-white font-bold text-lg">Green Farm Agriculture</span>
+        </div>
+        <p class="text-sm leading-relaxed mb-4 max-w-sm">Growing wholesome food for Botswana families since 2005.</p>
+        <p class="text-xs text-gray-500 flex items-center gap-1.5"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Plot 1234, Tlokweng Road, Gaborone, Botswana</p>
+      </div>
+      <div>
+        <h3 class="font-bold text-white text-sm uppercase tracking-wider mb-4">Quick Links</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="index.html"    class="hover:text-farm-amber transition-colors flex items-center gap-1.5"><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i> Home</a></li>
+          <li><a href="about.html"    class="hover:text-farm-amber transition-colors flex items-center gap-1.5"><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i> About Us</a></li>
+          <li><a href="products.html" class="hover:text-farm-amber transition-colors flex items-center gap-1.5"><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i> Products</a></li>
+          <li><a href="gallery.html"  class="hover:text-farm-amber transition-colors flex items-center gap-1.5"><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i> Gallery</a></li>
+          <li><a href="contact.html"  class="hover:text-farm-amber transition-colors flex items-center gap-1.5"><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i> Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-bold text-white text-sm uppercase tracking-wider mb-4">Get In Touch</h3>
+        <ul class="space-y-2 text-sm">
+          <li class="flex items-center gap-2"><i data-lucide="phone" class="w-3.5 h-3.5 text-farm-light"></i> +267 7123 4567</li>
+          <li class="flex items-center gap-2"><i data-lucide="mail" class="w-3.5 h-3.5 text-farm-light"></i> info@greenfarm.co.bw</li>
+          <li class="flex items-center gap-2"><i data-lucide="clock" class="w-3.5 h-3.5 text-farm-light"></i> Mon–Sat: 6am – 6pm</li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-gray-700 pt-6 text-center text-xs text-gray-500">
+      <p>&copy; 2025 Green Farm Agriculture. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // ===== MOBILE MENU =====
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    let menuOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('open', menuOpen);
+      menuBtn.setAttribute('aria-expanded', menuOpen);
+      // Swap icon
+      const icon = menuBtn.querySelector('i, svg');
+      if (menuOpen) {
+        icon.setAttribute('data-lucide', 'x');
+      } else {
+        icon.setAttribute('data-lucide', 'menu');
+      }
+      lucide.createIcons();
+    });
+
+    // ===== FILTER SYSTEM =====
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const categorySections = document.querySelectorAll('.category-section');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter;
+
+        // Update active state
+        filterBtns.forEach(b => {
+          b.classList.remove('active');
+          b.classList.add('bg-white', 'border', 'border-gray-200', 'text-gray-700');
+          b.classList.remove('bg-farm-green', 'text-white', 'border-farm-green');
+        });
+        btn.classList.add('active', 'bg-farm-green', 'text-white', 'border-farm-green');
+        btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+
+        // Show/hide sections
+        categorySections.forEach(section => {
+          const sectionCat = section.dataset.section;
+          if (filter === 'all' || sectionCat === filter) {
+            section.classList.remove('section-hidden');
+            section.classList.add('section-visible');
+          } else {
+            section.classList.add('section-hidden');
+            section.classList.remove('section-visible');
+          }
+        });
+
+        // Re-trigger stagger animations for visible cards
+        setTimeout(() => {
+          document.querySelectorAll('.section-visible .stagger-child').forEach((child, i) => {
+            setTimeout(() => child.classList.add('revealed'), i * 80);
+          });
+        }, 100);
+      });
+    });
+
+    // ===== CART SYSTEM =====
+    let cart = [];
+
+    function addToCart(name, price) {
+      const existing = cart.find(item => item.name === name);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({ name, price, qty: 1 });
+      }
+      updateCartUI();
+      showToast(`${name} added to cart!`);
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCartUI();
+    }
+
+    function changeQty(index, delta) {
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+      updateCartUI();
+    }
+
+    function clearCart() {
+      cart = [];
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const cartCountEl = document.getElementById('cartCount');
+      const cartListEl = document.getElementById('cartList');
+      const emptyCartEl = document.getElementById('emptyCart');
+      const cartFooterEl = document.getElementById('cartFooter');
+      const cartTotalEl = document.getElementById('cartTotal');
+
+      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+      const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+      // Update badge
+      if (totalItems > 0) {
+        cartCountEl.textContent = totalItems;
+        cartCountEl.classList.remove('hidden');
+        cartCountEl.classList.add('badge-pulse');
+      } else {
+        cartCountEl.classList.add('hidden');
+        cartCountEl.classList.remove('badge-pulse');
+      }
+
+      // Update list
+      if (cart.length > 0) {
+        emptyCartEl.classList.add('hidden');
+        cartListEl.classList.remove('hidden');
+        cartFooterEl.classList.remove('hidden');
+
+        cartListEl.innerHTML = cart.map((item, i) => `
+          <div class="flex items-center gap-4 bg-gray-50 rounded-xl p-3">
+            <div class="flex-1 min-w-0">
+              <p class="font-bold text-farm-dark text-sm truncate">${item.name}</p>
+              <p class="text-farm-green font-semibold text-sm">P ${item.price.toFixed(2)} each</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="changeQty(${i}, -1)" class="qty-btn w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:border-farm-green hover:text-farm-green">
+                <i data-lucide="minus" class="w-3.5 h-3.5"></i>
+              </button>
+              <span class="font-bold text-farm-dark w-6 text-center">${item.qty}</span>
+              <button onclick="changeQty(${i}, 1)" class="qty-btn w-7 h-7 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:border-farm-green hover:text-farm-green">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+            <button onclick="removeFromCart(${i})" class="text-gray-300 hover:text-red-500 transition-colors">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        `).join('');
+
+        cartTotalEl.textContent = `P ${totalPrice.toFixed(2)}`;
+        lucide.createIcons();
+      } else {
+        emptyCartEl.classList.remove('hidden');
+        cartListEl.classList.add('hidden');
+        cartFooterEl.classList.add('hidden');
+      }
+    }
+
+    // Cart sidebar toggle
+    const cartBtnEl = document.getElementById('cartBtn');
+    const cartOverlay = document.getElementById('cartOverlay');
+    const cartSidebar = document.getElementById('cartSidebar');
+
+    cartBtnEl.addEventListener('click', openCart);
+
+    function openCart() {
+      cartOverlay.classList.remove('hidden');
+      setTimeout(() => {
+        cartOverlay.classList.remove('opacity-0');
+        cartOverlay.classList.add('opacity-100');
+      }, 10);
+      cartSidebar.classList.remove('translate-x-full');
+    }
+
+    function closeCart() {
+      cartOverlay.classList.remove('opacity-100');
+      cartOverlay.classList.add('opacity-0');
+      cartSidebar.classList.add('translate-x-full');
+      setTimeout(() => cartOverlay.classList.add('hidden'), 300);
+    }
+
+    // ===== TOAST NOTIFICATIONS =====
+    let toastTimer;
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    // ===== SCROLL REVEAL =====
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal-section').forEach(el => revealObserver.observe(el));
+
+    // Staggered children reveal
+    const staggerObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const parent = entry.target.closest('.category-section');
+          if (parent && parent.classList.contains('section-visible')) {
+            const children = parent.querySelectorAll('.stagger-child');
+            const index = Array.from(children).indexOf(entry.target);
+            setTimeout(() => entry.target.classList.add('revealed'), index * 80);
+          }
+          staggerObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05 });
+
+    document.querySelectorAll('.stagger-child').forEach(el => staggerObserver.observe(el));
+
+    // ===== COUNTER ANIMATION =====
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const target = parseInt(entry.target.dataset.count);
+          if (!target) return;
+          let current = 0;
+          const duration = 1500;
+          const step = target / (duration / 16);
+          const animate = () => {
+            current += step;
+            if (current >= target) {
+              entry.target.textContent = target;
+            } else {
+              entry.target.textContent = Math.floor(current);
+              requestAnimationFrame(animate);
+            }
+          };
+          animate();
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+
+    // Initial reveal for visible sections
+    setTimeout(() => {
+      document.querySelectorAll('.section-visible .stagger-child').forEach((child, i) => {
+        setTimeout(() => child.classList.add('revealed'), i * 100 + 200);
+      });
+    }, 300);
+  </script>
+</body>
+</html>
